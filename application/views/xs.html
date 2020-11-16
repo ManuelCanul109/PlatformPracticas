@@ -1,0 +1,169 @@
+
+
+
+<div>
+	Estado Solicitud :
+	<select name="estado_solicitud">
+		<option value="">select</option>
+		<?php 
+			$estado_solicitud_values = array(
+				'0'=>'Solicitado',
+				'1'=>'En Curso',
+				'2'=>'Finalizado',
+				'3'=>'Cancelado',
+			);
+
+			foreach($estado_solicitud_values as $value => $display_text)
+			{
+				$selected = ($value == $this->input->post('estado_solicitud')) ? ' selected="selected"' : "";
+
+				echo '<option value="'.$value.'" '.$selected.'>'.$display_text.'</option>';
+			} 
+			?>
+	</select>
+</div>
+<div>
+	Status Solicitud :
+	<select name="status_solicitud">
+		<option value="">select</option>
+		<?php 
+			$status_solicitud_values = array(
+				'0'=>'Activo',
+				'1'=>'Inactivo',
+			);
+
+			foreach($status_solicitud_values as $value => $display_text)
+			{
+				$selected = ($value == $this->input->post('status_solicitud')) ? ' selected="selected"' : "";
+
+				echo '<option value="'.$value.'" '.$selected.'>'.$display_text.'</option>';
+			} 
+			?>
+	</select>
+</div>
+
+
+
+
+<?php
+require_once('database.php');
+session_start();
+
+if (isset($_SESSION['usuario'])) {
+  $solicitud_query = "SELECT * FROM `solicitud` WHERE `solicitud`.`id_usuario`={$_SESSION['id_usuario']} AND `solicitud`.`eliminado`=0 ORDER BY `fecha_solicitud` DESC LIMIT 1";
+
+  $solicitud_results = mysqli_query($db, $solicitud_query);
+  $row_count = mysqli_num_rows($solicitud_results);
+  if ($row_count == 0) {
+    $mensaje_error = "No se ha solicitado una carta de presentaci&oacute;n.";
+  }
+  $row = mysqli_fetch_assoc($solicitud_results);
+
+  //Nombre del mes de solicitud
+  $solicitud_month_number = date_format(date_create($row['fecha_solicitud']), 'n');
+  switch ($solicitud_month_number) {
+    case 1:
+      $solicitud_month_name = "enero";
+      break;
+    case 2:
+      $solicitud_month_name = "febrero";
+      break;
+    case 3:
+      $solicitud_month_name = "marzo";
+      break;
+    case 4:
+      $solicitud_month_name = "abril";
+      break;
+    case 5:
+      $solicitud_month_name = "mayo";
+      break;
+    case 6:
+      $solicitud_month_name = "junio";
+      break;
+    case 7:
+      $solicitud_month_name = "julio";
+      break;
+    case 8:
+      $solicitud_month_name = "agosto";
+      break;
+    case 9:
+      $solicitud_month_name = "septiembre";
+      break;
+    case 10:
+      $solicitud_month_name = "octubre";
+      break;
+    case 11:
+      $solicitud_month_name = "noviembre";
+      break;
+    case 12:
+      $solicitud_month_name = "diciembre";
+      break;
+  }
+  //Nombre del mes de solicitud
+
+  //Nombre del mes de inicio
+  
+  //Nombre del mes de inicio
+
+  //Nombre del mes de finalizacion
+  $final_month_number = date_format(date_create($row['fecha_final']), 'n');
+  switch ($final_month_number) {
+    case 1:
+      $final_month_name = "enero";
+      break;
+    case 2:
+      $final_month_name = "febrero";
+      break;
+    case 3:
+      $final_month_name = "marzo";
+      break;
+    case 4:
+      $final_month_name = "abril";
+      break;
+    case 5:
+      $final_month_name = "mayo";
+      break;
+    case 6:
+      $final_month_name = "junio";
+      break;
+    case 7:
+      $final_month_name = "julio";
+      break;
+    case 8:
+      $final_month_name = "agosto";
+      break;
+    case 9:
+      $final_month_name = "septiembre";
+      break;
+    case 10:
+      $final_month_name = "octubre";
+      break;
+    case 11:
+      $final_month_name = "noviembre";
+      break;
+    case 12:
+      $final_month_name = "diciembre";
+      break;
+  }
+  //Nombre del mes de finalizacion
+} else {
+  header("Location: login.php");
+  exit();
+}
+?>
+
+
+
+<?php if($hayerror){ ?>
+  <div class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <?php echo $mensajeerror; ?>
+        </div>
+        <?php } ?>
+
+        <?php if($subidacorrecta){ ?>
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <?php echo $mensajecorrecto; ?>
+        </div>
+        <?php } ?>
